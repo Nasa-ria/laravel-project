@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\tasks;
 
 class TasksController extends Controller
 {
@@ -13,7 +14,11 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return view('tasks.index');
+      //
+      $tasks = tasks::all();
+
+      return view('tasks.index' ,compact('tasks'));
+
     }
 
     /**
@@ -23,7 +28,9 @@ class TasksController extends Controller
      */
     public function create()
     {
+        //
         return view('tasks.create');
+       
     }
 
     /**
@@ -35,6 +42,23 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         //
+       
+        $Objtasks= new tasks();
+        
+        $Objtasks->title=$request->input('title');
+        $Objtasks->body=$request->input('body');
+        $Objtasks->email=$request->input('email');
+        $Objtasks->mobilenumber=$request->input('mobilenumber');
+         
+        
+        if($Objtask->save())
+           { "your new task is saved"}
+             else
+               
+              {" ooppsss.. something went wrong"}
+               
+        return redirect()->route('tasks.index');
+               
     }
 
     /**

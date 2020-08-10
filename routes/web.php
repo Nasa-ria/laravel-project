@@ -42,8 +42,9 @@ Route::get('/ ', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
  Route::resource('/tasks','taskscontroller', ['names' => [
-    'index'=>'tasks.index',
-     'edit'=>'tasks.edit',
-    'create'=>'tasks.create',
- ]]);
+      'index'=>'tasks.index',
+       'edit'=>'tasks.edit',
+      'create'=>'tasks.create',
+   ]]);

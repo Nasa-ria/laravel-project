@@ -15,8 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <br>
                     <a href="{{ route('tasks.create')}}">Add Task</a><br>
-                    <a href="{{route('tasks.index')}}"> View Tasks</a><br>
+                   {{ --<a href="{{route('tasks.index')}}"> View Tasks</a><br>--}}
                     {{--  <a href="{{route('tasks.edit')}}"> Edit Tasks</a>  --}}
                 </div>
             </div>
