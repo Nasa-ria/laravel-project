@@ -14,11 +14,12 @@ class CreateTasksTable extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
+            //I've edited your database table. 
             $table->id();
             $table ->string('title');
-            $table ->string('body');
-            $table ->string('email')->unique();
-            $table->string('mobile number');
+            $table ->text('body');
+            $table ->string('email');
+            $table->string('mobile_number');
             $table->timestamps();
         });
     }

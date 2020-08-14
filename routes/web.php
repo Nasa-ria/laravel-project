@@ -42,9 +42,10 @@ Route::get('/ ', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
  Route::resource('/tasks','taskscontroller', ['names' => [
-      'index'=>'tasks.index',
-       'edit'=>'tasks.edit',
-      'create'=>'tasks.create',
-   ]]);
+    'index' => 'tasks.index',
+    'edit' => 'tasks.edit',
+    'create' => 'tasks.create',
+    'show' => 'tasks.show',
+ ]])->middleware('auth');
+Route::get('tasks/delete/{id}', 'TasksController@destroy')->name('tasks.delete');

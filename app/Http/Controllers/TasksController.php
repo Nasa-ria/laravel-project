@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\tasks;
+// use App\tasks;
+//Always Capitalize your model names, it should be use App\Tasks; instead
+use App\Tasks;
 
+//Also, you have to import the validation facade. Thats what you'll use to validate your form
+use Illuminate\Support\Facades\Validator;
+
+//Import the paginator to use paginators in your pages
+use Illuminate\Pagination\Paginator;
 class TasksController extends Controller
 {
     /**
@@ -14,10 +21,11 @@ class TasksController extends Controller
      */
     public function index()
     {
-      //
-      $tasks = tasks::all();
+      //Remember, always capitalize your model names
+    //   $tasks = tasks::all();
+    $tasks = Tasks::paginate(10);
 
-      return view('tasks.index' ,compact('tasks'));
+      return view('tasks.index', compact('tasks'));
 
     }
 
@@ -28,7 +36,7 @@ class TasksController extends Controller
      */
     public function create()
     {
-        //
+        
         return view('tasks.create');
        
     }
@@ -41,23 +49,29 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
-       
-        $Objtasks= new tasks();
+        //Do some research on form validations if you don't understand what I've done
+        $validate_fields = Validator::make($request->all(),[
+            'title' => ['required', 'min: 3'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'min: 10'],
+            'description' => ['required', 'min: 30']
+        ]);
+
+        //Below is an example of an if statement
+        if($validate_fields->fails()){
+            //If validation fails, return to the form page with the validation errors
+            return back()->withErrors($validate_fields);
+        }else{
+            //If fields are validated, add to database and redirect user
+            Tasks::create([
+                'title' => $request->title,
+                'email' => $request->email,
+                'mobile_number' => $request->phone,
+                'body' => $request->description,
+            ]);
+            return redirect()->route('tasks.index');
+        }
         
-        $Objtasks->title=$request->input('title');
-        $Objtasks->body=$request->input('body');
-        $Objtasks->email=$request->input('email');
-        $Objtasks->mobilenumber=$request->input('mobilenumber');
-         
-        
-        if($Objtask->save())
-           { "your new task is saved"}
-             else
-               
-              {" ooppsss.. something went wrong"}
-               
-        return redirect()->route('tasks.index');
                
     }
 
@@ -69,7 +83,9 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        
+        //This is where you view the task details. First of all, you have to fetch the task with the id that is passed
+        $task = Tasks::findOrFail($id);
+        return view('tasks.show', compact('task'));
     }
 
     /**
@@ -80,7 +96,9 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        return view('tasks.edit');
+        //Fetch the task id that you want to edit
+        $task = Tasks::findOrFail($id);
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -92,7 +110,24 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task = Tasks::findOrFail($id);
+        $validate_fields = Validator::make($request->all(), [
+            'title' => ['required', 'min: 3'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'min: 10'],
+            'body' => ['required', 'min: 30']
+        ]);
+        if($validate_fields->fails()){
+            return back()->withErrors($validate_fields);
+        }else{
+            $task->update([
+                'title' => $request->title,
+                'email' => $request->email,
+                'mobile_number' => $request->phone,
+                'body' => $request->body,
+            ]);
+            return redirect()->route('tasks.index');
+        }
     }
 
     /**
@@ -103,6 +138,8 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Tasks::findOrFail($id);
+        $task->delete();
+        return back();
     }
 }

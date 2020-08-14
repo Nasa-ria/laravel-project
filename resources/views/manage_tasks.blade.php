@@ -8,6 +8,28 @@
                 <div class="card-header">{{ __('manage tasks') }}  </div> 
                 
                 
+ <form>
+                    <table>
+                        <thead>
+                    <th> title</th>
+                    <th>body</th>
+                    <th> Email</th>
+                    <th> mobile number</th>
+                    <th>Action</th>
+                        </thead>
+                    <tbody>
+                    @foreach($tasks as $task)
+                      <tr>
+                    <td> {{ $tasks->value}}</td>
+                    <td>{{ $tasks->value}}</td>
+                    <td>{{ $tasks->value}}</td>
+                     <td>{{ $tasks->value}}</td>
+
+                        </tr>
+                        @endforeach
+                     </tbody>
+                    
+                    </table>
 
 
             </div>
