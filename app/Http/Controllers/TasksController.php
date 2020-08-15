@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 //Import the paginator to use paginators in your pages
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
+// importing the mail in order for ur mail to be identified 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ria;
+
 class TasksController extends Controller
 {
     /**
@@ -61,7 +66,8 @@ class TasksController extends Controller
         if($validate_fields->fails()){
             //If validation fails, return to the form page with the validation errors
             return back()->withErrors($validate_fields);
-        }else{
+        }
+        else{
             //If fields are validated, add to database and redirect user
             Tasks::create([
                 'title' => $request->title,
@@ -69,6 +75,19 @@ class TasksController extends Controller
                 'mobile_number' => $request->phone,
                 'body' => $request->description,
             ]);
+            $data=[
+                'title'=>$request->full_name,
+                'email'=>$request->email,
+                'body'=>$request->description,
+                'mobile_number'=>$request->phone,
+            ];
+
+            Mail::send('Email.mail', $data ,function($message) use ($data){ 
+                $message->from('mumuninasaria@gmail.com', 'Nasaria Mumuni');
+              $message->to('mumuninasaria@gmail.com', 'Nasaria Mumuni')
+              ->subject($data['body']);
+            });
+            
             return redirect()->route('tasks.index');
         }
         
@@ -126,7 +145,8 @@ class TasksController extends Controller
                 'mobile_number' => $request->phone,
                 'body' => $request->body,
             ]);
-            return redirect()->route('tasks.index');
+            Session::flash('update_success', 'Task has been updated successfully');
+            return back();
         }
     }
 
@@ -140,6 +160,7 @@ class TasksController extends Controller
     {
         $task = Tasks::findOrFail($id);
         $task->delete();
+        Session::flash('delete_success', 'Task has been deleted successfully');
         return back();
     }
 }

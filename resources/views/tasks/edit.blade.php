@@ -10,12 +10,15 @@
           @if ($errors->all())
           <div class="alert alert-danger">
             <ul>
-              @foreach($errors as $error)
-              <li> {{$error}}</li><br>
-              @endforeach
+             { @foreach($errors as $error)
+              <li> {{$error->first()}}</li><br>
+              @endforeach}
 
             </ul>
           </div>
+          @endif
+          @if(Session::has('update_success'))
+          <p class="alert alert-success">{{session('update_success')}}</p>
           @endif
           <form method="POST" action="{{route('tasks.update', $task->id)}}">
             @method('PATCH')
@@ -30,7 +33,7 @@
             </div>
             <div class="form group">
               <label for="Email">Email:</label>
-              <input type="text" class="form-control" name="Email" value="{{$task->email}}">
+              <input type="text" class="form-control" name="email" value="{{$task->email}}">
             </div>
             <div class="form group">
               <label for="phone">phone:</label>
