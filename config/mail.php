@@ -39,8 +39,8 @@ return [
             'host' => env('MAIL_HOST', 'smtp.gmail.com'),
             'port' => env('MAIL_PORT', 465),
             'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
-            'username' => (''),
-            'password' => (''),
+            'username' => ('mumuninasaria@gmail.com'),
+            'password' => ('o5o7o629'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -84,8 +84,8 @@ return [
     */
 
     'from' => [
-        'address' => env( 'MAIL_FROM_EMAIL','Exampl@gmail.com'),
-        'name' => env('MAIL_FROM_NAME','name'),
+        'address' => env( 'MAIL_FROM_EMAIL',' hello@examplegmail.com'),
+        'name' => env('MAIL_FROM_NAME','Example'),
     ],
 
     /*
